@@ -35,16 +35,11 @@ class Cell():
             self.master.create_rectangle(xmin, ymin, xmax, ymax, fill = fill, outline = outline)
 
 class CellGrid(Canvas):
-    def __init__(self,master, rowNumber, columnNumber, cellSize, start, goal, *args, **kwargs):
+    def __init__(self,master, rowNumber, columnNumber, cellSize, start, goal, obstacles, *args, **kwargs):
         Canvas.__init__(self, master, width = cellSize * columnNumber , height = cellSize * rowNumber, *args, **kwargs)
 
-        FILLED_COLOR_BG = "green"
-        EMPTY_COLOR_BG = "white"
-        FILLED_COLOR_BORDER = "green"
-        EMPTY_COLOR_BORDER = "black"
-
-        fillColourBG = EMPTY_COLOR_BG
-        fillBorder = EMPTY_COLOR_BORDER
+        fillColourBG = "white"
+        fillBorder = "black"
 
         self.cellSize = cellSize
 
@@ -56,6 +51,18 @@ class CellGrid(Canvas):
                 line.append(Cell(self, column, row, cellSize, fillColourBG, fillBorder))
                 if (row,column) == start:
                     line.append(Cell(self, column, row, cellSize, "yellow", fillBorder))
+                if (row,column) == goal:
+                    line.append(Cell(self, column, row, cellSize, "lightgreen", fillBorder))
+                if row == 0:
+                    line.append(Cell(self, column, row, cellSize, "black", fillBorder))
+                if row == (rowNumber - 1):
+                    line.append(Cell(self, column, row, cellSize, "black", fillBorder))
+                if column == 0:
+                    line.append(Cell(self, column, row, cellSize, "black", fillBorder))
+                if column == (columnNumber - 1):
+                    line.append(Cell(self, column, row, cellSize, "black", fillBorder))
+                if (row,column) in obstacles:
+                    line.append(Cell(self, column, row, cellSize, "black", fillBorder))
             self.grid.append(line)
 
         #memorize the cells that have been modified to avoid many switching of state during mouse motion.
@@ -104,13 +111,15 @@ if __name__ == "__main__" :
     rows = 10
     cols = 10
     cell_size = 50
-    start = (1, 1)
+    start = (6, 1)
     goal = (7, 7)
+    obstacles = ((1, 4), (3, 4), (4, 4), (5, 4), (6, 4), (7, 4), (8, 4), (9, 4))
     #grid_ascii = gen_gridWorld()
     nodes = [[0] * rows for i in range(cols)]
 
     app = Tk()
-    grid = CellGrid(app, rows, cols, cell_size, start, goal)
+    grid = CellGrid(app, rows, cols, cell_size, start, goal, obstacles)
+    print(grid)
     grid.pack()
 
     app.mainloop()
