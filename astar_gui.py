@@ -35,7 +35,7 @@ class Cell():
             self.master.create_rectangle(xmin, ymin, xmax, ymax, fill = fill, outline = outline)
 
 class CellGrid(Canvas):
-    def __init__(self,master, rowNumber, columnNumber, cellSize, *args, **kwargs):
+    def __init__(self,master, rowNumber, columnNumber, cellSize, start, goal, *args, **kwargs):
         Canvas.__init__(self, master, width = cellSize * columnNumber , height = cellSize * rowNumber, *args, **kwargs)
 
         FILLED_COLOR_BG = "green"
@@ -54,7 +54,8 @@ class CellGrid(Canvas):
             line = []
             for column in range(columnNumber):
                 line.append(Cell(self, column, row, cellSize, fillColourBG, fillBorder))
-
+                if (row,column) == start:
+                    line.append(Cell(self, column, row, cellSize, "yellow", fillBorder))
             self.grid.append(line)
 
         #memorize the cells that have been modified to avoid many switching of state during mouse motion.
@@ -109,7 +110,7 @@ if __name__ == "__main__" :
     nodes = [[0] * rows for i in range(cols)]
 
     app = Tk()
-    grid = CellGrid(app, rows, cols, cell_size)
+    grid = CellGrid(app, rows, cols, cell_size, start, goal)
     grid.pack()
 
     app.mainloop()
