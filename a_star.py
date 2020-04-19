@@ -1,14 +1,14 @@
 #!/Users/kidharb/anaconda3/bin/python3
 
 class Node():
-    def __init__(self,parent,position,reachable):
+    def __init__(self,parent,position,goal,reachable):
         self.parent = parent
         self.position = position
         self.reachable = reachable
 
         self.f = 0
         self.g = 0
-        self.h = 0
+        self.h = abs(goal[1] - self.position[1]) + abs(goal[0] - self.position[0])
 
 def astar(grid, start, goal):
     openSet = []
@@ -53,12 +53,13 @@ if __name__ == '__main__':
     grid = gen_gridWorld()
     nodes = [[0] * rows for i in range(cols)]
 
+    print("Parent node : x,y position : heuristic distance : reachable")
     for i in range(rows):
         for j in range(cols):
             if ((i,j) == start):
-                nodes[i][j] = Node(start,(i,j),grid[i][j])
+                nodes[i][j] = Node(start,(i,j),goal,grid[i][j])
             else:
-                nodes[i][j] = Node((0,0),(i,j),grid[i][j])
-            print(nodes[i][j].position,nodes[i][j].reachable)
+                nodes[i][j] = Node((0,0),(i,j),goal,grid[i][j])
+            print(nodes[i][j].parent,nodes[i][j].position,nodes[i][j].h,nodes[i][j].reachable)
     #astar(grid, start, goal)
 
