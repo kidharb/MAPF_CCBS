@@ -23,10 +23,6 @@ class Cell():
             fill = self.fillcolour
             outline = self.fillborder
 
-            #if not self.fill:
-            #    fill = Cell.EMPTY_COLOR_BG
-            #    outline = Cell.EMPTY_COLOR_BORDER
-
             xmin = self.abs * self.size
             xmax = xmin + self.size
             ymin = self.ord * self.size
