@@ -3,18 +3,15 @@
 from tkinter import *
 
 class Cell():
-    FILLED_COLOR_BG = "green"
-    EMPTY_COLOR_BG = "white"
-    FILLED_COLOR_BORDER = "green"
-    EMPTY_COLOR_BORDER = "black"
-
-    def __init__(self, master, x, y, size):
+    def __init__(self, master, x, y, size, fillColourBG, fillBorder):
         """ Constructor of the object called by Cell(...) """
         self.master = master
         self.abs = x
         self.ord = y
         self.size= size
         self.fill= False
+        self.fillcolour= fillColourBG
+        self.fillborder= fillBorder
 
     def _switch(self):
         """ Switch if the cell is filled or not. """
@@ -23,12 +20,12 @@ class Cell():
     def draw(self):
         """ order to the cell to draw its representation on the canvas """
         if self.master != None :
-            fill = Cell.FILLED_COLOR_BG
-            outline = Cell.FILLED_COLOR_BORDER
+            fill = self.fillcolour
+            outline = self.fillborder
 
-            if not self.fill:
-                fill = Cell.EMPTY_COLOR_BG
-                outline = Cell.EMPTY_COLOR_BORDER
+            #if not self.fill:
+            #    fill = Cell.EMPTY_COLOR_BG
+            #    outline = Cell.EMPTY_COLOR_BORDER
 
             xmin = self.abs * self.size
             xmax = xmin + self.size
@@ -41,6 +38,14 @@ class CellGrid(Canvas):
     def __init__(self,master, rowNumber, columnNumber, cellSize, *args, **kwargs):
         Canvas.__init__(self, master, width = cellSize * columnNumber , height = cellSize * rowNumber, *args, **kwargs)
 
+        FILLED_COLOR_BG = "green"
+        EMPTY_COLOR_BG = "white"
+        FILLED_COLOR_BORDER = "green"
+        EMPTY_COLOR_BORDER = "black"
+
+        fillColourBG = EMPTY_COLOR_BG
+        fillBorder = EMPTY_COLOR_BORDER
+
         self.cellSize = cellSize
 
         self.grid = []
@@ -48,7 +53,7 @@ class CellGrid(Canvas):
 
             line = []
             for column in range(columnNumber):
-                line.append(Cell(self, column, row, cellSize))
+                line.append(Cell(self, column, row, cellSize, fillColourBG, fillBorder))
 
             self.grid.append(line)
 
