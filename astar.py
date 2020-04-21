@@ -9,11 +9,10 @@ import heapq
 class Node():
     def __init__(self,start,position,goal,reachable):
         if start == position: # The start node
-            self.parent = position
             self.gScore = 0
         else:
-            self.parent = None
             self.gScore = 99999
+        self.parent = None
         self.position = position
         # reachable tracks whether we can occupy the block or not.
         # we cannot occupy the borders ar any obstacles in the gridworld.
@@ -29,18 +28,15 @@ def astar(app, grid, start, goal):
     openSet = set()
     closedSet = set()
     
-    # Put the first node on the queue. Use h value as priority
     openSet.add(grid[start[0]][start[1]])
-    
-    #openSet.put((grid[start[0]][start[1]].h,(start[0],start[1])))
-    
+        
     while openSet:
         # extract the Node with the lowest f-score
         current = min(openSet, key=lambda o:o.gScore + o.h)
 
         if current.position == goal:
             path = []
-            while current.parent != 0:
+            while current.parent:
                 path.append(current.position)
                 current = current.parent
                 
@@ -48,7 +44,6 @@ def astar(app, grid, start, goal):
             print("Goal reached - terminating")
             return path[::-1]
         openSet.remove(current)
-        #Add it to the closed set
         closedSet.add(current)
 
         for neighbour in [(grid[current.position[0]+1][current.position[1]]), (grid[current.position[0]][current.position[1]+1]), (grid[current.position[0]-1][current.position[1]]), (grid[current.position[0]][current.position[1]-1])]:
@@ -87,7 +82,7 @@ def gen_gridWorld(rows, cols, start, goal, obstacles):
                 nodes[i][j] = Node(start,(i,j),goal,0)
             else:
                 nodes[i][j] = Node(start,(i,j),goal,1)    
-            print(nodes[i][j].position, nodes[i][j].h)
+            #print(nodes[i][j].position, nodes[i][j].h)
     return nodes
 
 if __name__ == "__main__" :
